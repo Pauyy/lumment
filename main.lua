@@ -1,5 +1,7 @@
-_line = 1 --tracks the current line
-_offset = 0
+
+
+local _line = 1 --tracks the current line
+local _offset = 0
 local start_line --is set when a start of a comment is found
 local start_offset
 --"Custom" table.insert so the metatable for comments works 
@@ -106,8 +108,9 @@ for i= 1, #text do
 	end
 	
 end
-
+--[[
 for k,v in ipairs(comments) do
 	print(v)
 end
-
+]]
+return comments
