@@ -1,3 +1,13 @@
+_line = 1 --tracks the current line
+_offset = 0
+local start_line --is set when a start of a comment is found
+local start_offset
+--"Custom" table.insert so the metatable for comments works 
+table.insert = function(t, value)
+	local length = #t
+	t[length + 1] = value
+end
+
 
 local file_name = arg[1] or "test.java"
 local file = assert(io.open(file_name, "r"))
@@ -17,10 +27,21 @@ flags.slash = false
 local comment = {}
 comment.clear = function() for k, v in ipairs(comment) do comment[k] = nil end end
 local comments= {}
+comments = setmetatable(comments, {
+	__newindex = function(t, k, v)
+		rawset(t, k, string.format("%d %d %s", start_line, start_offset, v))
+	end
+})
 
 local last_character
 local character
 local i = 1
+
+function set_local_line_and_offset()
+	start_line = _line
+	start_offset = _offset
+end
+
 
 function handleCommentTypes(c, lc)
 	--print("check", c, flags.star, flags.slash, flags.comment_multi_line, flags.comment_single_line)
@@ -55,6 +76,13 @@ end
 for i= 1, #text do
 	last_character = character
 	character = text:sub(i,i)
+	if character:find('%c') then
+		_line = _line + 1
+		_offset = 0
+	else 
+		_offset = _offset + 1
+	end
+	
 	if flags.comment then
 		handleCommentTypes(character, last_character)
 		
@@ -62,22 +90,24 @@ for i= 1, #text do
 	elseif last_character == "/" and character == "/" then
 		flags.comment_single_line = true
 		flags.comment = true
+		set_local_line_and_offset()
 	elseif character == "/" then --set that a multiline comment could start
 		if not flags.string then flags.slash = true end
 	elseif flags.slash and character == "*" then --multiline comment starts
 		flags.comment_multi_line = true
 		flags.comment = true
 		flags.slash = false
+		set_local_line_and_offset()
 	elseif character == '"' then --string starts
 		flags.string = not flags.string
 	elseif character:find('%S') then --current character is not a whitespace if there was a slash before it cannot start a multiline comment anymore
 		flags.slash = false
 		flags.star = false
-	
 	end
+	
 end
 
 for k,v in ipairs(comments) do
-	print(k,v)
+	print(v)
 end
 
