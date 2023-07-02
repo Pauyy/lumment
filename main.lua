@@ -1,4 +1,6 @@
+local arg={...}
 
+--Better output format
 
 local _line = 1 --tracks the current line
 local _offset = 0
@@ -11,7 +13,7 @@ table.insert = function(t, value)
 end
 
 
-local file_name = arg[1] or "test.java"
+local file_name = assert(arg[1], "No argument passed")
 local file = assert(io.open(file_name, "r"))
 
 local text = file:read("*all")
