@@ -1,21 +1,23 @@
 local complete = {}
-local base_path = ""
---TODO Fix
-function scan_directory(path)
-	local directories = io.popen(string.format("dir %s /b /ad", path))
+local base_path = os.getenv("PWD") or io.popen("cd"):read()
+local find_comment = loadfile("main.lua")
+
+function scan_directory(path, i)
+	local directories = io.popen(string.format("dir %s /b /ad-h 2>nul", path))
 	for directoriename in directories:lines() do
-		scan_directory(path .. "/" .. directoriename)
+		--print("directory",i, directoriename)
+		scan_directory(path .. "\\" .. directoriename, i+1)
 	end
 	directories:close()
-	local files = io.popen(string.format("dir %s *.java* *.h* /b /a-d", path))
+	local files = io.popen(string.format("dir %s\\*.java* *.h* /b /a-d-h 2>nul", path))
 	for filename in files:lines() do
-		print(filename)
-		table.insert(complete, dofile("main.lua")(path .. "/" .. filename))
+		--print("file",i, path, filename, path .. "\\" .. filename)
+		table.insert(complete, find_comment(path .. "\\" .. filename))
 	end
 	files:close()
 end
-
-scan_directory(base_path)
+local i = 0
+scan_directory(base_path, i)
 
 for k,v in ipairs(complete) do
  print(v)
