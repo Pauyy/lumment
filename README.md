@@ -28,5 +28,12 @@ or use absolute paths
 lua C:\path_to\lumment.lua C:\path\directorie
 ```
 
+# Test
+test by running 
+```shell
+lua lumment.lua
+```
+it will print all comments contained in test.java and test-files/test.javaS
+
 # References
 Took the test files from https://github.com/g4s8/commentator/blob/c1e136ecd288dce27954f18e8644b8f574aebe51/test-files/test.java and changed it a bit
