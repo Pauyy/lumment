@@ -9,7 +9,7 @@ function scan_directory(path, i)
 		scan_directory(path .. "\\" .. directoriename, i+1)
 	end
 	directories:close()
-	local files = io.popen(string.format("dir %s\\*.java* *.h* /b /a-d-h 2>nul", path))
+	local files = io.popen(string.format('dir %s /b /a-d-h 2>nul | findstr /l ".java .c .h"', path))
 	for filename in files:lines() do
 		--print("file",i, path, filename, path .. "\\" .. filename)
 		table.insert(complete, find_comment(path .. "\\" .. filename))
