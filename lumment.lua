@@ -1,5 +1,5 @@
 local complete = {}
-local base_path = os.getenv("PWD") or io.popen("cd"):read()
+local base_path = arg[1] or os.getenv("PWD") or io.popen("cd"):read()
 local find_comment = loadfile("main.lua")
 
 function scan_directory(path, i)
