@@ -1,6 +1,11 @@
 # lumment
 A Java and C source code comment parser written in lua
 
+# Setup
+clone or download (and unzip) this repository  
+install lua (easiest way is to download [precompiled](https://luabinaries.sourceforge.net/) binaries  
+
+
 # Usage
 to scan an entire tree use 
 ```shell
