@@ -20,5 +20,9 @@ local i = 0
 scan_directory(base_path, i)
 
 for k,v in ipairs(complete) do
- print(v)
- end
+	if type(v) == 'table' then
+		for k,v in ipairs(v) do
+			print(v)
+		end
+	end
+end
