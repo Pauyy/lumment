@@ -27,7 +27,7 @@ scan_directory(base_path, i)
 for k,v in ipairs(complete) do
 	if type(v) == 'table' then
 		for k,v in ipairs(v) do
-			print(v)
+			print(((v:gsub("%c","\\n")):gsub("(%d* %d* )(.*)", '%1"%2"')))
 		end
 	end
 end
