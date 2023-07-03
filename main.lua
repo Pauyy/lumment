@@ -50,7 +50,7 @@ end
 function handleCommentTypes(c, lc)
 	--print("check", c, flags.star, flags.slash, flags.comment_multi_line, flags.comment_single_line)
 	if flags.comment_single_line then --we are in a single line comment
-		if c:find('%c') then --if the single line comment contains a \n or \r it finished
+		if c:find('[\n\r]') then --if the single line comment contains a \n or \r it finished
 			flags.clear()
 			table.insert(comments, table.concat(comment))
 			--print("Singleline inserted")
@@ -80,7 +80,7 @@ end
 for i= 1, #text do
 	last_character = character
 	character = text:sub(i,i)
-	if character:find('%c') then
+	if character:find('[\n\r]') then
 		_line = _line + 1
 		_offset = 0
 	else 
