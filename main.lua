@@ -33,7 +33,7 @@ comment.clear = function() for k, v in ipairs(comment) do comment[k] = nil end e
 local comments= {}
 comments = setmetatable(comments, {
 	__newindex = function(t, k, v)
-		rawset(t, k, string.format('"%s" %d %d "%s"', file_name, start_line, start_offset, v))
+		rawset(t, k, string.format('%q %d %d %q', file_name, start_line, start_offset, v))
 	end
 })
 
