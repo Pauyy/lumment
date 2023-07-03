@@ -5,7 +5,7 @@ local relative_path = arg[0]:sub(1, last_slash or 0)
 
 local base_path = arg[1] or os.getenv("PWD") or io.popen("cd"):read()
 
-local find_comment = loadfile(relative_path .. "main.lua")
+local find_comment = assert(loadfile(relative_path .. "main.lua"))
 
 function scan_directory(path, i)
 	local directories = io.popen(string.format("dir %s /b /ad-h 2>nul", path))
