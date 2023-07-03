@@ -27,6 +27,28 @@ or use absolute paths
 lua C:\path_to\lumment.lua C:\path\directorie
 ```
 
+# Output
+```
+"..\\BlackjackCL\\blackjack.cpp" 5 26 " std::default_random_engine"
+"..\\BlackjackCL\\blackjack.cpp" 6 26 " std::chrono::system_clock"
+"..\\BlackjackCL\\blackjack.cpp" 27 2 "values"
+"..\\BlackjackCL\\blackjack.cpp" 28 2 "0 1 2 3 4 5 6 7 8 9 10 11 12"
+"..\\BlackjackCL\\blackjack.cpp" 29 2 "2 3 4 5 6 7 8 9 T J Q  K  A"
+"..\\BlackjackCL\\blackjack.cpp" 43 31 "there are only 52 cards in a deck every number over 52 loops into the next deck of cards"
+"..\\BlackjackCL\\blackjack.cpp" 44 32 "the cards are orderd every 13 cards a new suit starts"
+```
+Formatted as
+|Path|line|offset|comment|
+|----|----|------|-------|
+|"..\\BlackjackCL\\blackjack.cpp"| 5| 26 |" std::default_random_engine"|
+|"..\\BlackjackCL\\blackjack.cpp"| 6| 26 |" std::chrono::system_clock"
+|"..\\BlackjackCL\\blackjack.cpp"| 27| 2 |"values"
+|"..\\BlackjackCL\\blackjack.cpp"| 28| 2 |"0 1 2 3 4 5 6 7 8 9 10 11 12"
+|"..\\BlackjackCL\\blackjack.cpp"| 29| 2 |"2 3 4 5 6 7 8 9 T J Q  K  A"
+|"..\\BlackjackCL\\blackjack.cpp"| 43| 31|"there are only 52 cards in a deck every number over 52 loops into the next deck of cards"
+|"..\\BlackjackCL\\blackjack.cpp"| 44| 32|"the cards are orderd every 13 cards a new suit starts"
+
+
 # Test
 test by running 
 ```shell
