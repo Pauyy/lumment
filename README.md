@@ -48,6 +48,15 @@ Formatted as
 |"..\\BlackjackCL\\blackjack.cpp"| 43| 31|"there are only 52 cards in a deck every number over 52 loops into the next deck of cards"
 |"..\\BlackjackCL\\blackjack.cpp"| 44| 32|"the cards are orderd every 13 cards a new suit starts"
 
+# Import Output
+The output is formatted to work more or less good as an sqlite import  
+1. Connect to, or create s sqlite3 database
+2. Create a table with 4 Columns. Example: `create table comments (path text, line int, offset int, comment text);`
+3. Change mode to `tcl` with `.mode tcl`
+4. Import data with `.import file_with_comment.txt table_name`
+5. Ignore any errors and hope that it worked
+6. Query
+
 
 # Test
 test by running 
