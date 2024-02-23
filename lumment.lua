@@ -7,11 +7,21 @@ local base_path = arg[1] or os.getenv("PWD") or io.popen("cd"):read()
 
 local find_comment = assert(loadfile(relative_path .. "main.lua"))
 
+local lummentignore = io.open(relative_path .. ".lummentignore", "r")
+local ignored_folders = {}
+if lummentignore then
+	for line in lummentignore:lines() do
+		ignored_folders[line] = true
+	end
+	lummentignore:close()
+end
+
 function scan_directory(path, i)
 	local directories = io.popen(string.format("dir %s /b /ad-h 2>nul", path))
 	for directoriename in directories:lines() do
-		--print("directory",i, directoriename)
-		scan_directory(path .. "\\" .. directoriename, i+1)
+		if not ignored_folders[directoriename] then
+			scan_directory(path .. "\\" .. directoriename, i+1)
+		end
 	end
 	directories:close()
 	local files = io.popen(string.format('dir %s /b /a-d-h 2>nul | findstr /r ".*[.]cpp$ .*[.]hpp$ .*[.]c$ .*[.]h$ .*[.]java$ .*[.]ts$ .*[.]js$"', path))
