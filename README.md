@@ -27,6 +27,15 @@ or use absolute paths
 lua C:\path_to\lumment.lua C:\path\directorie
 ```
 
+# Ignore
+Specific folders can be ignored by including them into the `.lummentignore` file.  
+```
+ignored_folder
+node_modules
+```
+will ignore the contents of any folder that is named `ignored_folder` or `node_modules`  
+To add new ignored folders just write down their name on a new line.  
+
 # Output
 ```
 "..\\BlackjackCL\\blackjack.cpp" 5 26 " std::default_random_engine"
@@ -63,7 +72,8 @@ test by running
 ```shell
 lua lumment.lua
 ```
-it will print all comments contained in test.java and test-files/test.java
+it will print all comments contained in test.java and test-files/test.java  
+by default the `ignored_folder` folder will be ignored  
 
 # References
 Took the test files from https://github.com/g4s8/commentator/blob/c1e136ecd288dce27954f18e8644b8f574aebe51/test-files/test.java and changed it a bit
