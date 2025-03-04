@@ -13,8 +13,9 @@ table.insert = function(t, value)
 end
 
 
-local file_name = assert(arg[1], "No argument passed")
-local file = assert(io.open(file_name, "r"))
+local base_path = assert(arg[1], "Expected base path but got no argument")
+local file_name = assert(arg[2], "Expected file name but got no argument")
+local file = assert(io.open(base_path .. file_name, "r"))
 
 local text = file:read("*all")
 file:close()
