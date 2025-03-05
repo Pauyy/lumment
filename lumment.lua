@@ -6,7 +6,7 @@ local lumment_dir = script_path:sub(1, last_slash or 0)
 
 -- execution path
 local scan_path = arg[1] or ""
-if scan_path then
+if scan_path ~= "" then
 	-- Append path seperator to end when one is omitted
 	if scan_path:sub(#scan_path, #scan_path) ~= "/" and scan_path:sub(#scan_path, #scan_path) ~= "\\" then
 		scan_path = scan_path .. path_separator
