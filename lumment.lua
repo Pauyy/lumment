@@ -1,5 +1,6 @@
 local path_separator = package.config:sub(1,1)
 assert(path_separator == "/" or path_separator == "\\", "Lua config returned a path separator that we can not handle, expected something like '/' or '\' but got " .. path_separator .. " instead")
+local linux = path_separator == "/" and true or false
 local script_path = arg[0]
 local _, last_slash = script_path:find("^.*" .. path_separator)
 local lumment_dir = script_path:sub(1, last_slash or 0)
@@ -27,10 +28,20 @@ if lummentignore_f then
 	lummentignore_f:close()
 end
 
---[[
-	command for linux
-	ls -1R
-]]
+function load_linux_files(lumment_ignore, path)
+	local folders = assert(io.popen(string.format('ls -1Rp | egrep -v /$')))
+	local relevant_folders = {}
+	local relative_path = ""
+	local files_to_check = {}
+	for rf in folders:lines() do 
+		if rf:sub(#rf) == ":" then -- if a file ends with ':' we falsely detect them as a folder, well 
+			relative_path = rf:sub(1, #rf-1) .. '/'
+		elseif rf ~= "" then
+			table.insert(files_to_check, relative_path .. rf)
+		end
+	end
+	return files_to_check
+end
 
 function load_windows_files(lumment_ignore, path)
 	local hidden_folders = assert(io.popen(string.format('dir "%s" /ADH /B /S 2>nul', path)))
@@ -58,7 +69,13 @@ function load_windows_files(lumment_ignore, path)
 	return files_to_check
 end
 
-local files = load_windows_files(lumment_ignore, absolute_path)
+local files = {}
+if linux then
+	files = load_linux_files(lumment_ignore, absolute_path)
+else
+	files = load_windows_files(lumment_ignore, absolute_path)
+end
+
 
 local comments = {}
 local valid_file_suffix = {"c", "cpp", "h", "hpp", "java", "js", "ts"}
