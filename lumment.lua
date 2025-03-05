@@ -38,7 +38,13 @@ function load_linux_files(lumment_ignore, path)
 		if rf:sub(#rf) == ":" then -- if a file ends with ':' we falsely detect them as a folder, well 
 			relative_path = rf:sub(1, #rf-1) .. '/'
 		elseif rf ~= "" then
-			table.insert(files_to_check, string.sub(relative_path .. rf, absolute_path_length + 2))
+			local ignore = false
+			for _, v in ipairs(lumment_ignore) do
+				if relative_path:find(v, 1, true) then ignore = true break end
+			end
+			if not ignore then
+				table.insert(files_to_check, string.sub(relative_path .. rf, absolute_path_length + 2))
+			end
 		end
 	end
 	return files_to_check
