@@ -14,8 +14,8 @@ if scan_path ~= "" then
 	end
 end
 
-local absolute_path = os.getenv("PWD") or io.popen("cd"):read() .. path_separator ..  scan_path
-
+-- Has trailing / or \ depending on os
+local absolute_path = (os.getenv("PWD") or io.popen("cd"):read()) .. path_separator ..  scan_path
 local find_comment = assert(loadfile(lumment_dir .. "check_file.lua"))
 
 local lummentignore_f = io.open(lumment_dir .. ".lummentignore", "r")
@@ -29,15 +29,16 @@ if lummentignore_f then
 end
 
 function load_linux_files(lumment_ignore, path)
-	local folders = assert(io.popen(string.format('ls -1Rp | egrep -v /$')))
+	local folders = assert(io.popen(string.format('ls %s -1Rp | egrep -v /$', path)))
 	local relevant_folders = {}
 	local relative_path = ""
 	local files_to_check = {}
+	local absolute_path_length = #path
 	for rf in folders:lines() do 
 		if rf:sub(#rf) == ":" then -- if a file ends with ':' we falsely detect them as a folder, well 
 			relative_path = rf:sub(1, #rf-1) .. '/'
 		elseif rf ~= "" then
-			table.insert(files_to_check, relative_path .. rf)
+			table.insert(files_to_check, string.sub(relative_path .. rf, absolute_path_length + 2))
 		end
 	end
 	return files_to_check
@@ -71,7 +72,8 @@ end
 
 local files = {}
 if linux then
-	files = load_linux_files(lumment_ignore, absolute_path)
+	-- Removes trailing /
+	files = load_linux_files(lumment_ignore, absolute_path:sub(1, #absolute_path-1))
 else
 	files = load_windows_files(lumment_ignore, absolute_path)
 end
